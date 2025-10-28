@@ -13,7 +13,7 @@
 |------|------|------------------|
 | Test Manager | | Planning, scheduling, coordination, metric tracking |
 | Risk Analyst | | Risk identification, prioritization, test design linkage |
-| Test Executor | | Execution, evidence capture, defect logging |
+| Test Executor |Kavengi Lilian Kathini | Execution, evidence capture, defect logging |
 
 ## Group Rules
 
@@ -204,7 +204,7 @@
 |------|------|-----------|------|
 | | Test Manager | | |
 | | Risk Analyst | | |
-| | Test Executor | | |
+| | Test Executor |LKK |28/10/2025|
 
 ## Overall Summary
 
