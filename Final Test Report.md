@@ -12,7 +12,7 @@
 | Role | Name | Responsibilities |
 |------|------|------------------|
 | Test Manager | | Planning, scheduling, coordination, metric tracking |
-| Risk Analyst |Rose Kemunto | Risk identification, prioritization, test design linkage |
+| Risk Analyst | | Risk identification, prioritization, test design linkage |
 | Test Executor | | Execution, evidence capture, defect logging |
 
 ## Group Rules
@@ -196,7 +196,7 @@
 | Name | Role | Initials | Date |
 |------|------|-----------|------|
 | | Test Manager | | |
-| | Risk Analyst |Rose Kemunto|28/10/2025|
+| | Risk Analyst | | |
 | | Test Executor | | |
 
 ## Overall Summary
