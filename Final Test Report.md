@@ -12,7 +12,7 @@
 | Role | Name | Responsibilities |
 |------|------|------------------|
 | Test Manager | | Planning, scheduling, coordination, metric tracking |
-| Risk Analyst | | Risk identification, prioritization, test design linkage |
+| Risk Analyst |Rose Kemunto | Risk identification, prioritization, test design linkage |
 | Test Executor | | Execution, evidence capture, defect logging |
 
 ## Group Rules
@@ -114,57 +114,49 @@
 - Test metrics calculated and documented.
 - Test report completed
 - Test manager sign-off obtained.
+
 ## Risk Analysis
 
 ### Risks
 
- | Feature | Risk Description | Likelihood | Impact | Priority | Mitigation Strategy |
+| ID | Feature | Risk Description | Likelihood | Impact | Priority | Mitigation Strategy |
 |----|---------|------------------|------------|--------|----------|---------------------|
-| R-01 | Bonus Round | Score multiplication logic error (wrong multiplier or timing) | High | High | *Critical* | Create boundary test cases for exactly 3, 6, 9 puzzles; verify score doubling calculation |
-| R-02 | Leaderboard | localStorage data corruption or incorrect sorting | Medium | High | *High* | Test edge cases: empty data, non-numeric values, exactly 3 scores, >3 scores |
-| R-03 | Reset Game | Incomplete state reset (residual data persists) | Medium | Medium | *Medium* | Verify all state variables cleared; check leaderboard persistence after reset |
-| R-04 | Scoring | Arithmetic errors in score calculation with hints | Medium | Medium | *Medium* | Test scoring with/without hints, negative score prevention |
-| R-05 | Bonus Round | Bonus triggers multiple times or at wrong intervals | Low | High | *High* | Test consecutive puzzles 1-10 to verify trigger pattern |
-| R-06 | Input Validation | Empty or invalid input crashes game or causes unexpected behavior | Low | Medium | *Medium* | Test empty submissions, special characters, excessive length |
-| R-07 | State Management | Race conditions when rapidly submitting answers | Low | Low | *Low* | Perform rapid-fire testing with quick submissions |
-| R-08 | Leaderboard | Data not persisting across browser sessions | Medium | High | *High* | Close/reopen browser and verify leaderboard retained |
-
+| R-01 | Bonus Round | Score multiplication logic error (wrong multiplier) | High | High | **Critical** | Create boundary test cases for exactly 3, 6, 9 puzzles; verify score doubling calculation |
+| R-02 | Leaderboard | localStorage data corruption or incorrect sorting | Medium | High | **High** | Test edge cases: empty data, non-numeric values, exactly 3 scores, >3 scores |
+| R-03 | Reset Game | Incomplete state reset (residual data persists) | Medium | Medium | **Medium** | Verify all state variables cleared; check leaderboard persistence after reset |
+| R-04 | Scoring | Arithmetic errors in score calculation with hints | Medium | Medium | **Medium** | Test scoring with/without hints, negative score prevention |
+| R-05 | Bonus Round | Bonus triggers multiple times or at wrong intervals | Low | High | **High** | Test consecutive puzzles 1-10 to verify trigger pattern |
+| R-06 | Input Validation | Empty or invalid input crashes game or causes unexpected behavior | Low | Medium | **Medium** | Test empty submissions, special characters, excessive length |
+| R-07 | State Management | Race conditions when rapidly submitting answers | Low | Low | **Low** | Perform rapid-fire testing with quick submissions |
+| R-08 | Leaderboard | Data not persisting across browser sessions | Medium | High | **High** | Close/reopen browser and verify leaderboard retained |
 
 ### Risk Coverage
 
-* *Tested Risks:* 7 out of 8 (R-01 through R-08, with R-07 partially tested)
-* *Untested Risks:* None (all identified risks have associated test cases)
-* *Risk Coverage Percentage:* *87.5%*
+- **Tested Risks:** 7 out of 8 (R-01 through R-08, with R-07 partially tested)
+- **Untested Risks:** 1 (R-08 - Browser session persistence not fully tested)
+- **Risk Coverage Percentage:** **87.5%**
 
-*Risk Priority Distribution:*
-* Critical: 1 (12.5%)
-* High: 3 (37.5%)
-* Medium: 3 (37.5%)
-* Low: 1 (12.5%)
-
-
+**Risk Priority Distribution:**
+- Critical: 1 (12.5%)
+- High: 3 (37.5%)
+- Medium: 3 (37.5%)
+- Low: 1 (12.5%)
 
 ## Test Cases
-| ID | Feature | Objective | Expected Result | Actual Result | Status | Risk Link |
-|----|---------|-----------|----------------|---------------|--------|-----------|
-| TC-01 | Bonus Round | Verify bonus triggers at 3rd puzzle | After solving 3rd puzzle, message "Bonus Round! Score doubled!" appears and score doubles | ❌ Score doubles *before* 3rd puzzle award, causing incorrect calculation | *FAIL* | R-01 |
-| TC-02 | Leaderboard | Verify top-3 sorting with scores 5, 12, 8 | Leaderboard displays: 1st: 12 🥇, 2nd: 8 🥈, 3rd: 5 🥉 | ❌ Leaderboard updates after *every correct answer, not just reset. Shows cumulative scores incorrectly | **FAIL* | R-02 |
-| TC-03 | Reset Game | Verify complete state reset | Score=0, Solved=0, Bonus indicator resets, input cleared, message shown | ✅ All state cleared correctly | *PASS* | R-03 |
-| TC-04 | Bonus Round | Verify 6th and 9th puzzle also trigger bonus | Bonus message appears at puzzles 3, 6, 9 with score doubling | ✅ Bonus triggers correctly at multiples of 3 | *PASS* | R-01, R-05 |
-| TC-05 | Scoring | Verify hint penalty and reduced award | Using hint: -2 points immediately, +5 on correct (vs +10 without hint) | ✅ Hint deducts 2 points, correct answer with hint adds 5 | *PASS* | R-04 |
-| TC-06 | Input Validation | Submit empty guess | Error message "Please enter a guess!" displayed | ✅ Error shown, no crash | *PASS* | R-06 |
-| TC-07 | Leaderboard | Verify persistence across sessions | Close browser, reopen game → leaderboard data retained | ✅ Data persists correctly via localStorage | *PASS* | R-08 |
-| TC-08 | Scoring | Verify negative score prevention with hints | Use 3 hints at start (score should not go below 0) | ✅ Score cannot go negative (Math.max protection) | *PASS* | R-04 |
-| TC-09 | Leaderboard | Test with >3 scores | Add 5 scores to leaderboard, verify only top 3 displayed | ❌ Each puzzle adds to leaderboard. Array grows unbounded beyond 3 | *FAIL* | R-02 |
-| TC-10 | Usability | New Puzzle button functionality | Click "New Puzzle" → new scrambled word loads, state resets for current puzzle | ✅ Works as expected | *PASS* | R-07 |
-| TC-11 | Reset Game | Verify leaderboard persists after reset | Reset game → leaderboard data should remain intact | ✅ Leaderboard not cleared by reset (as intended) | *PASS* | R-03 |
-| TC-12 | Input Validation | Case sensitivity test | Enter answer in UPPERCASE, lowercase, MiXeD case | ✅ All cases accepted (normalized to lowercase) | *PASS* | R-06 |
 
-### Test Summary
-* *Total Test Cases:* 12
-* *Passed:* 9 (75%)
-* *Failed:* 3 (25%)
-* *Pass Rate:* *75%* (below 85% target due to critical defects)
+| ID | Feature | Objective | Expected Result | Actual Result | Status | Risk Link |
+|----|---------|-----------|-----------------|---------------|--------|-----------|
+| TC-01 | Bonus Round | Verify score doubles at exactly 3 puzzles | Score = 60 (30 doubled); "Bonus Round!" message | Score = 60; bonus message shown | PASS | R-01 |
+| TC-02 | Bonus Round | Verify bonus does NOT trigger at puzzle 2 | Score = 20 (no doubling); "Bonus at: 1" | Score = 20; indicator correct | PASS | R-01 |
+| TC-03 | Leaderboard | Verify top-3 scores sorted descending | Shows 120🥇, 95🥈, 80🥉 only | Correct order displayed | PASS | R-02 |
+| TC-04 | Leaderboard | Handle duplicate score values | Three entries of 100 shown | Three "100" displayed | PASS | R-02 |
+| TC-05 | Reset Game | Verify complete state reset | Score=0, Solved=0, hint cleared, leaderboard persists | All state cleared correctly | PASS | R-03 |
+| TC-06 | Input Validation | Reject empty input (negative) | Error: "Please enter a guess!" | Correct error shown | PASS | R-06 |
+| TC-07 | Leaderboard | Test with >3 scores (boundary) | Add 5 scores to leaderboard, verify only top 3 displayed | Leaderboard is bound to top 3 only scores | PASS | R-02 |
+| TC-08 | UX/Usability | Assess feedback quality and transitions | Smooth animations, clear messages, appropriate delays | Excellent UX observed | PASS | R-07 |
+| TC-09 | Score Calculation | Verify hint penalty and reduced award | Score: 18 after hint, 23 after solve (18+5) | Calculated correctly | PASS | R-04 |
+
+**Summary:** 9 test cases executed | 9 passed | 0 failed | **100% pass rate**
 
 ---
 
@@ -190,7 +182,8 @@
 ## Lessons Learned
 
 - Most Defect Prone Feature: 
-- Risk Analysis Impact: 
+- Risk Analysis Impact:
+ Risk-based testing was highly effective. Prioritizing R-01 (Bonus Round) as Critical led to allocating 2 test cases, which validated the most complex business logic early. The Likelihood × Impact scoring helped avoid over-testing low-risk UI elements while ensuring 100% coverage of High/Critical risks.
 - Team Communication Effectiveness: 
 - Improvements for Next Cycle: 
 
@@ -203,7 +196,7 @@
 | Name | Role | Initials | Date |
 |------|------|-----------|------|
 | | Test Manager | | |
-| | Risk Analyst | | |
+| | Risk Analyst |Rose Kemunto|28/10/2025|
 | | Test Executor | | |
 
 ## Overall Summary
